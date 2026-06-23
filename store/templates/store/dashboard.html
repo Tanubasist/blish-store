@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dashboard - Discount Mart</title>
+    <style>
+        body {
+            background-color: #F9F9F6;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #FFFFFF;
+            padding: 40px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        h1 {
+            font-weight: 300;
+        }
+
+        .nav-links a {
+            color: #222;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Welcome to your Dashboard, {{ user.username }}!</h1>
+        <p>Yeh aapka private member area hai.</p>
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Back to Store</a>
+            <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit"
+                    style="background:none; border:none; color:red; cursor:pointer; font-weight:bold; font-size:1em;">Logout</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

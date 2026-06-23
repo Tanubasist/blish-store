@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{ product.name }} - Blish</title>
+    <style>
+        /* Minimalist Global Look */
+        body {
+            background-color: #FAF9F6;
+            color: #333333;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 40px;
+        }
+
+        /* Product Container - Side by Side Layout */
+        .container {
+            max-width: 900px;
+            margin: 60px auto 0;
+            display: flex;
+            gap: 60px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .product-image {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+        }
+
+        .product-image img {
+            max-width: 100%;
+            filter: grayscale(15%);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+        }
+
+        .product-info {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        h1 {
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-top: 0;
+            font-size: 2.5em;
+            color: #111;
+        }
+
+        .price {
+            font-size: 1.5em;
+            color: #555;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .desc {
+            line-height: 1.8;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        /* Solid Black Button for strong Call to Action */
+        .btn-black {
+            display: inline-block;
+            background-color: #111;
+            color: #fff;
+            padding: 15px 35px;
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-black:hover {
+            background-color: #444;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav
+        style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; border-bottom: 1px solid #EFEFEF; flex-wrap: wrap; gap: 15px;">
+        <div style="font-size: 1.4em; font-weight: 300; letter-spacing: 3px; color: #111;">
+            <a href="{% url 'home' %}" style="text-decoration: none; color: inherit;">BLISH.</a>
+        </div>
+
+        <div style="font-size: 0.85em; text-transform: uppercase; letter-spacing: 1.5px;">
+            <a href="{% url 'home' %}"
+                style="color: #555; text-decoration: none; margin-right: 25px; transition: color 0.3s;"
+                onmouseover="this.style.color='#000'" onmouseout="this.style.color='#555'">Store</a>
+
+            <a href="{% url 'view_cart' %}"
+                style="color: #555; text-decoration: none; margin-right: 25px; transition: color 0.3s;"
+                onmouseover="this.style.color='#000'" onmouseout="this.style.color='#555'">Cart</a>
+
+            {% if user.is_authenticated %}
+            <a href="{% url 'dashboard' %}"
+                style="color: #555; text-decoration: none; margin-right: 25px; transition: color 0.3s;"
+                onmouseover="this.style.color='#000'" onmouseout="this.style.color='#555'">Dashboard</a>
+
+            <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit"
+                    style="background: none; border: none; color: #555; font-family: inherit; font-size: 1em; text-transform: uppercase; letter-spacing: 1.5px; cursor: pointer; padding: 0; transition: color 0.3s;"
+                    onmouseover="this.style.color='#000'" onmouseout="this.style.color='#555'">Logout</button>
+            </form>
+            {% else %}
+            <a href="{% url 'login' %}" style="color: #555; text-decoration: none; transition: color 0.3s;"
+                onmouseover="this.style.color='#000'" onmouseout="this.style.color='#555'">Login</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="product-image">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% endif %}
+        </div>
+        <div class="product-info">
+            <h1>{{ product.name }}</h1>
+            <div class="price">₹{{ product.price }}</div>
+            <p class="desc">{{ product.description }}</p>
+            <a href="{% url 'add_to_cart' product.id %}" class="btn-black">Add to Cart</a>
+        </div>
+    </div>
+
+</body>
+
+</html>

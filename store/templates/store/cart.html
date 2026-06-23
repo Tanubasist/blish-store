@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Your Cart - Blish</title>
+    <style>
+        /* Minimalist Global Look */
+        body {
+            background-color: #FAF9F6;
+            color: #333333;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 40px;
+        }
+
+        /* Cart Container */
+        .cart-container {
+            max-width: 700px;
+            margin: 60px auto;
+        }
+
+        h1 {
+            font-weight: 300;
+            letter-spacing: 3px;
+            margin-bottom: 40px;
+            color: #111;
+            border-bottom: 1px solid #EFEFEF;
+            padding-bottom: 20px;
+            font-size: 1.8em;
+            text-transform: uppercase;
+        }
+
+        /* Clean Cart List */
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #EFEFEF;
+        }
+
+        .item-details {
+            font-size: 1.1em;
+            font-weight: 400;
+            color: #222;
+        }
+
+        .item-price {
+            text-align: right;
+            color: #555;
+        }
+
+        .remove-btn {
+            color: #999;
+            text-decoration: none;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+            display: block;
+            margin-top: 8px;
+        }
+
+        .remove-btn:hover {
+            color: #d9534f;
+        }
+
+        /* Total & Checkout */
+        .cart-total {
+            text-align: right;
+            font-size: 1.2em;
+            margin-top: 30px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            color: #111;
+        }
+
+        .checkout-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background-color: #111;
+            color: #fff;
+            padding: 18px;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.95em;
+            margin-top: 40px;
+            transition: background 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .checkout-btn:hover {
+            background-color: #444;
+        }
+
+        .empty-cart {
+            text-align: center;
+            color: #777;
+            margin-top: 50px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav
+        style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; border-bottom: 1px solid #EFEFEF; flex-wrap: wrap; gap: 15px;">
+        <div style="font-size: 1.4em; font-weight: 300; letter-spacing: 3px; color: #111;">
+            <a href="{% url 'home' %}" style="text-decoration: none; color: inherit;">BLISH.</a>
+        </div>
+
+        <div style="font-size: 0.85em; text-transform: uppercase; letter-spacing: 1.5px;">
+            <a href="{% url 'home' %}"
+                style="color: #555; text-decoration: none; margin-right: 25px; transition: color 0.3s;"
+                onmouseover="this.style.color='#000'" onmouseout="this.style.color='#555'">Store</a>
+
+            <a href="{% url 'view_cart' %}"
+                style="color: #000; font-weight: bold; text-decoration: none; margin-right: 25px; transition: color 0.3s;">Cart</a>
+
+            {% if user.is_authenticated %}
+            <a href="{% url 'dashboard' %}"
+                style="color: #555; text-decoration: none; margin-right: 25px; transition: color 0.3s;"
+                onmouseover="this.style.color='#000'" onmouseout="this.style.color='#555'">Dashboard</a>
+
+            <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit"
+                    style="background: none; border: none; color: #555; font-family: inherit; font-size: 1em; text-transform: uppercase; letter-spacing: 1.5px; cursor: pointer; padding: 0; transition: color 0.3s;"
+                    onmouseover="this.style.color='#000'" onmouseout="this.style.color='#555'">Logout</button>
+            </form>
+            {% else %}
+            <a href="{% url 'login' %}" style="color: #555; text-decoration: none; transition: color 0.3s;"
+                onmouseover="this.style.color='#000'" onmouseout="this.style.color='#555'">Login</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="cart-container">
+        <h1>Your Cart</h1>
+
+        {% if items %}
+        {% for item in items %}
+        <div class="cart-item">
+            <div class="item-details">
+                {{ item.product.name }}
+                <span style="color:#999; font-size:0.85em; margin-left: 10px;">QTY: {{ item.quantity }}</span>
+            </div>
+            <div class="item-price">
+                ₹{% widthratio item.product.price 1 item.quantity %}
+                <a href="{% url 'remove_from_cart' item.id %}" class="remove-btn">Remove</a>
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="cart-total">
+            TOTAL: ₹{{ total_price }}
+        </div>
+
+        <a href="{% url 'checkout' %}" class="checkout-btn">Proceed to Checkout</a>
+        {% else %}
+        <div class="empty-cart">
+            <p>Your cart is currently empty.</p>
+            <a href="{% url 'home' %}"
+                style="display: inline-block; margin-top: 20px; color: #111; text-decoration: none; border-bottom: 1px solid #111; padding-bottom: 3px; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px;">Continue
+                Shopping</a>
+        </div>
+        {% endif %}
+    </div>
+
+</body>
+
+</html>
