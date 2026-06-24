@@ -1,1 +1,1 @@
-web: gunicorn discount_mart.wsgi
+web: gunicorn discount_mart.wsgi:application
