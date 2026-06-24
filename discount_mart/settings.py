@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-7%x&qlr4#g)qsu1b1+zcnuhvo_pzx@+0tvf7&ql03pys16l9hf
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['blish-store-production-ffee.up.railway.app', 'localhost', '127.0.0.1']
 
 
 # Application definition
