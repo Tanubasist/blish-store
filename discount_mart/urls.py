@@ -1,9 +1,10 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 from store import views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
+from django.views.static import serve  # <-- Yeh import zaroori hai
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -21,4 +22,7 @@ urlpatterns = [
     
     path('checkout/', views.checkout, name='checkout'),
     path('success/', views.order_success, name='order_success'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    
+    # Yeh line add kariye taaki live server par media/images load ho sakein:
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+]
