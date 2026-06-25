@@ -116,19 +116,19 @@
             {% endif %}
         </div>
     </nav>
-<a href="{% url 'product_detail' product.id %}">
-    {% if "Ebook" in product.name %}
-    <img src="{% static 'images/ebook.png' %}" alt="{{ product.name }}">
-    {% elif "Canva" in product.name %}
-    <img src="{% static 'images/templates.png' %}" alt="{{ product.name }}">
-    {% else %}
-    <img src="{% static 'images/default.png' %}" alt="{{ product.name }}">
-    {% endif %}
-</a>
+
     <div class="product-grid">
         {% for product in products %}
         <div class="product-card">
-            
+            <a href="{% url 'product_detail' product.id %}">
+                {% if "Ebook" in product.name %}
+                <img src="{% static 'images/ebook.png' %}" alt="{{ product.name }}">
+                {% elif "Canva" in product.name %}
+                <img src="{% static 'images/templates.png' %}" alt="{{ product.name }}">
+                {% else %}
+                <img src="{% static 'images/default.png' %}" alt="{{ product.name }}">
+                {% endif %}
+            </a>
             <div class="product-title">{{ product.name }}</div>
             <div class="product-price">₹{{ product.price }}</div>
             <a href="{% url 'product_detail' product.id %}" class="btn">View Details</a>
