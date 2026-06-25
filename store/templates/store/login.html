@@ -1,33 +1,74 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login
-from .models import Product
+{% load static %}
+<!DOCTYPE html>
+<html>
 
-# 1. Home Page Logic
-def store_home(request):
-products = Product.objects.all()
-return render(request, 'store/home.html', {'products': products})
+<head>
+    <title>Blish - Login</title>
+    <style>
+        body {
+            background-color: #FAF9F6;
+            color: #333333;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            padding: 40px;
+        }
 
-# 2. Product Detail Page Logic
-def product_detail(request, product_id):
-product = get_object_or_404(Product, id=product_id)
-return render(request, 'store/product_detail.html', {'product': product})
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 40px;
+            border: 1px solid #EFEFEF;
+            background: #FFFFFF;
+            text-align: center;
+        }
 
-# 3. Dashboard Logic
-@login_required
-def dashboard(request):
-return render(request, 'store/dashboard.html')
+        .btn {
+            display: inline-block;
+            background-color: transparent;
+            color: #222222;
+            padding: 10px 22px;
+            text-decoration: none;
+            border: 1px solid #222222;
+            font-size: 0.85em;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
 
-# 4. Register/Sign-Up Logic
-def register(request):
-if request.method == 'POST':
-form = UserCreationForm(request.POST)
-if form.is_valid():
-user = form.save()
-login(request, user) # Account bante hi automatically login
-return redirect('dashboard')
-else:
-form = UserCreationForm()
+        .btn:hover {
+            background-color: #222222;
+            color: #FAF9F6;
+        }
 
-return render(request, 'store/register.html', {'form': form})
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+            border: 1px solid #CCCCCC;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+        <h2 style="font-weight: 300; letter-spacing: 2px; margin-bottom: 30px;">LOGIN TO BLISH.</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn">Login</button>
+        </form>
+
+        <p style="font-size: 0.85em; margin-top: 20px; color: #777;">
+            New user? <a href="{% url 'register' %}" style="color: #222;">Register here</a>
+        </p>
+    </div>
+
+</body>
+
+</html>
